@@ -33,7 +33,7 @@ export default function RootLayout({
           <Navbar />
 
           {/* pages */}
-          <div className='container max-w-7xl pt-12'>{children}</div>
+          <div className='container max-w-7xl pt-24'>{children}</div>
 
           {/* toast notification */}
           <Toaster />

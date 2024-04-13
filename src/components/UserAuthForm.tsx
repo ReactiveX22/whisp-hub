@@ -6,17 +6,25 @@ import { Button } from './ui/Button';
 import { FC, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { toast } from '@/hooks/use-toast';
+import { usePathname } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const pathname = usePathname() || '/';
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
 
+    let callbackUrl = '/';
+
+    if (pathname !== '/sign-in') {
+      callbackUrl = pathname;
+    }
+
     try {
-      await signIn('google');
+      await signIn('google', { callbackUrl: callbackUrl });
     } catch (error) {
       //toast notification
       toast({
