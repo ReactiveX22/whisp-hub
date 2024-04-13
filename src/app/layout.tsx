@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar';
+import Providers from '@/components/Providers';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import '@/styles/globals.css';
@@ -26,18 +27,18 @@ export default function RootLayout({
         inter.className
       )}
     >
-      <body className=''>
-        {/* Navbar */}
-        <Navbar />
+      <Providers>
+        <body>
+          {/* Navbar */}
+          <Navbar />
 
-        {authModal}
+          {/* pages */}
+          <div className='container max-w-7xl pt-12'>{children}</div>
 
-        {/* pages */}
-        <div className='container max-w-7xl pt-12'>{children}</div>
-
-        {/* toast notification */}
-        <Toaster />
-      </body>
+          {/* toast notification */}
+          <Toaster />
+        </body>
+      </Providers>
     </html>
   );
 }

@@ -1,32 +1,31 @@
-import { NextAuthOptions, getServerSession } from 'next-auth';
+import { db } from '@/lib/db';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import Google from 'next-auth/providers/google';
-import { db } from './db';
-import { Adapter } from 'next-auth/adapters';
 import { nanoid } from 'nanoid';
+import { NextAuthOptions, getServerSession } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(db) as Adapter,
+  adapter: PrismaAdapter(db),
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
   },
-  pages: { signIn: '/sign-in' },
+  pages: {
+    signIn: '/sign-in',
+  },
   providers: [
-    Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ token, session }) {
       if (token) {
-        if (session.user !== undefined) {
-          session.user.id = token.id;
-          session.user.name = token.name;
-          session.user.email = token.email;
-          session.user.image = token.picture;
-          session.user.username = token.username;
-        }
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+        session.user.username = token.username;
       }
 
       return session;

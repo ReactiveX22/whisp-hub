@@ -6,11 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { Button } from './ui/Button';
 import UserAuthForm from './UserAuthForm';
+import { FC } from 'react';
 
-export function SignInDialog() {
+interface SignInDialogProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const SignInDialog: FC<SignInDialogProps> = ({ className }) => {
   return (
     <Dialog modal={true}>
       <DialogTrigger asChild>
@@ -37,10 +40,10 @@ export function SignInDialog() {
             </Link>
           </p> */}
           <div className='w-3/5 sm:w-1/3'>
-            <UserAuthForm />
+            <UserAuthForm className={className} />
           </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};
